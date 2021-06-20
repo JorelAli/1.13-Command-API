@@ -58,5 +58,11 @@ public class CommandAPIMain extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		CommandAPI.onEnable(this);
+		
+		new CommandAPICommand("mycmd")
+			.executes((sender, args) -> {
+				System.out.println("hi");
+			})
+			.register();
 	}
 }

@@ -45,7 +45,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.help.HelpMap;
+import org.bukkit.help.HelpTopic;
 import org.bukkit.permissions.Permission;
+import org.jetbrains.annotations.NotNull;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -133,6 +136,12 @@ public class CommandAPIHandler<CommandSourceStack> {
 	final TreeMap<String, CommandPermission> PERMISSIONS_TO_FIX = new TreeMap<>();
 	final NMS<CommandSourceStack> NMS;
 	final CommandDispatcher<CommandSourceStack> DISPATCHER;
+	
+	// TODO: This shouldn't be a Map<>. This should be a List<Pair<String, List<String>>,
+	// If you register /cmd a<type1> b<type2>
+	// and then        /cmd c<type3> d<type4>
+	// then            /cmd e<type1>
+	// it passes because we override the old method!
 	final Map<String, List<String>> registeredCommands; //Keep track of what has been registered for type checking 
 	
 	private CommandAPIHandler() {
@@ -140,6 +149,22 @@ public class CommandAPIHandler<CommandSourceStack> {
 		NMS = CommandAPIVersionHandler.getNMS(bukkit.substring(bukkit.indexOf("minecraftVersion") + 17, bukkit.length() - 1));
 		DISPATCHER = NMS.getBrigadierDispatcher();
 		registeredCommands = new HashMap<>();
+	}
+	
+	void rewriteHelpMap() {
+		try {
+			HelpMap hmap = Bukkit.getServer().getHelpMap();
+			Field f = hmap.getClass().getDeclaredField("helpTopics");
+			f.setAccessible(true);
+			Map<String, HelpTopic> helpTopics = (Map<String, HelpTopic>) f.get(hmap);
+
+			for(String s : registeredCommands.keySet()) {
+				helpTopics.put("/" + s, NMS.help());
+			}
+			System.out.println(helpTopics);
+		} catch(ReflectiveOperationException e) {
+			
+		}
 	}
 	
 	void checkDependencies() {

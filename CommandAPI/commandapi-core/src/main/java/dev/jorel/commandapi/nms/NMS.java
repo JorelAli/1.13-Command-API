@@ -47,6 +47,7 @@ import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.help.HelpTopic;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.loot.LootTable;
@@ -355,5 +356,7 @@ public interface NMS<CommandListenerWrapper> {
 	 * @param player the player to send the command graph packet to
 	 */
 	void resendPackets(Player player);
+
+	default HelpTopic help() { return null; };
 
 }

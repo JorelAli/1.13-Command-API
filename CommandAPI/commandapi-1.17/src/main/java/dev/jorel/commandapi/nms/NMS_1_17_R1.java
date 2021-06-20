@@ -66,12 +66,15 @@ import org.bukkit.craftbukkit.v1_17_R1.command.VanillaCommandWrapper;
 import org.bukkit.craftbukkit.v1_17_R1.enchantments.CraftEnchantment;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_17_R1.help.CustomHelpTopic;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_17_R1.potion.CraftPotionEffectType;
 import org.bukkit.craftbukkit.v1_17_R1.util.CraftChatMessage;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.help.GenericCommandHelpTopic;
+import org.bukkit.help.HelpTopic;
 import org.bukkit.inventory.ComplexRecipe;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.potion.PotionEffectType;
@@ -171,6 +174,49 @@ import net.minecraft.world.phys.Vec3;
 // @RequireField(in = CustomFunctionManager.class, name = "h", ofType = int.class)
 // @RequireField(in = EntitySelector.class, name = "o", ofType = boolean.class)
 public class NMS_1_17_R1 implements NMS<CommandSourceStack> {
+	
+	@Override
+	public HelpTopic help() {
+		new GenericCommandHelpTopic(null);
+		
+		// We want to construct the following manually, because
+		// trying to link to the oriinal 
+//		this.command = command;
+//		if (command.getLabel().startsWith("/")) {
+//			this.name = command.getLabel();
+//		} else {
+//			this.name = "/" + command.getLabel();
+//		}
+//
+//		int i = command.getDescription().indexOf(10);
+//		if (i > 1) {
+//			this.shortText = command.getDescription().substring(0, i - 1);
+//		} else {
+//			this.shortText = command.getDescription();
+//		}
+//
+//		StringBuilder sb = new StringBuilder();
+//		sb.append(ChatColor.GOLD);
+//		sb.append("Description: ");
+//		sb.append(ChatColor.WHITE);
+//		sb.append(command.getDescription());
+//		sb.append("\n");
+//		sb.append(ChatColor.GOLD);
+//		sb.append("Usage: ");
+//		sb.append(ChatColor.WHITE);
+//		sb.append(command.getUsage().replace("<command>", this.name.substring(1)));
+//		if (command.getAliases().size() > 0) {
+//			sb.append("\n");
+//			sb.append(ChatColor.GOLD);
+//			sb.append("Aliases: ");
+//			sb.append(ChatColor.WHITE);
+//			sb.append(ChatColor.WHITE + StringUtils.join(command.getAliases(), ", "));
+//		}
+//
+//		this.fullText = sb.toString();
+		
+		return new CustomHelpTopic("/mycmd", "Says hello in the console", "full text", "permission");
+	}
 	
 	private static final MinecraftServer MINECRAFT_SERVER = ((CraftServer) Bukkit.getServer()).getServer();
 	private static final VarHandle ServerFunctionLibrary_functionCompilationLevel;
